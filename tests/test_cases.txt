@@ -1,0 +1,17 @@
+text1 = babcbabcbaccba
+ 
+text2 = abaaba
+ 
+text3 = abababa
+ 
+text4 = abcbabcbabcba
+ 
+text5 = forgeeksskeegfor
+ 
+text6 = caba
+ 
+text7 = abacdfgdcaba
+ 
+text8 = abacdfgdcabba
+ 
+text9 = abacdedcaba
