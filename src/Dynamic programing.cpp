@@ -11,7 +11,6 @@ bool isPalindrome(const string& s, int start, int end)
     }
     return true;
 }
-
 string longestPalindrome(string s)
 {
     int n = s.length();
@@ -28,7 +27,6 @@ string longestPalindrome(string s)
     }
     return "";
 }
-
 int main()
 {
     string input;
