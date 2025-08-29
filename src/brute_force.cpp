@@ -1,8 +1,7 @@
 #include <iostream>
 using namespace std;
 
-bool isPalindrome(const string& s, int start, int end) 
-{
+bool isPalindrome(const string& s, int start, int end) {
     while (start < end)
     {
         if (s[start] != s[end]) return false;
@@ -30,7 +29,6 @@ string longestPalindrome(string s)
 int main()
 {
     string input;
-	cout << "Enter a string: ";
-	cin >> input;
-	cout << "The longest palindromic substring is: " << longestPalindrome(input) << endl;
+    cin >> input;
+    cout << longestPalindrome(input) << endl;
 }
