@@ -1,4 +1,4 @@
 matplotlib for comparison plots
 time for benchmarks
 csv for reading test cases
-subprocesses for opening the brute force exe
+subprocesses for opening the brute_force.exe
