@@ -1,63 +1,49 @@
-# Python program to implement Manacher's Algorithm
- 
-def findLongestPalindromicString(text):
-    N = len(text)
-    if N == 0:
-        return
-    N = 2*N+1    # Position count
-    L = [0] * N
-    L[0] = 0
-    L[1] = 1
-    C = 1     # centerPosition
-    R = 2     # centerRightPosition
-    i = 0    # currentRightPosition
-    iMirror = 0     # currentLeftPosition
-    maxLPSLength = 0
-    maxLPSCenterPosition = 0
-    start = -1
-    end = -1
-    diff = -1
- 
-    # Uncomment it to print LPS Length array
-    # printf("%d %d ", L[0], L[1]);
-    for i in range(2,N):
-     
-        # get currentLeftPosition iMirror for currentRightPosition i
-        iMirror = 2*C-i
-        L[i] = 0
-        diff = R - i
-        # If currentRightPosition i is within centerRightPosition R
-        if diff > 0:
-            L[i] = min(L[iMirror], diff)
- 
-        # Attempt to expand palindrome centered at currentRightPosition i
-        # Here for odd positions, we compare characters and
-        # if match then increment LPS Length by ONE
-        # If even position, we just increment LPS by ONE without
-        # any character comparison
-        try:
-            while ((i+L[i]) < N and (i-L[i]) > 0) and \
-                    (((i+L[i]+1) % 2 == 0) or \
-                    (text[(i+L[i]+1)//2] == text[(i-L[i]-1)//2])):
-                L[i]+=1
-        except Exception as e:
-            pass
- 
-        if L[i] > maxLPSLength:        # Track maxLPSLength
-            maxLPSLength = L[i]
-            maxLPSCenterPosition = i
- 
-        # If palindrome centered at currentRightPosition i
-        # expand beyond centerRightPosition R,
-        # adjust centerPosition C based on expanded palindrome.
-        if i + L[i] > R:
-            C = i
-            R = i + L[i]
- 
-    # Uncomment it to print LPS Length array
-    # printf("%d ", L[i]);
-    start = (maxLPSCenterPosition - maxLPSLength) // 2
-    end = start + maxLPSLength - 1
-    print ("LPS of string is " + text + " : ",text[start:end+1])
+#%%
+class Manacher:
+    def __init__(self, inp_str: str):
+        self.inp_str = inp_str
 
-    # This code is contributed by BHAVYA JAIN
+    def process(self):
+        lst_str = ['@', '#']
+        for l in self.inp_str:
+            lst_str.append(l)
+            lst_str.append('#')
+        lst_str.append('$')
+        self.s = [0] * len(lst_str)
+        self.lst_str = lst_str
+        return self.find_manacher()
+
+    def find_manacher(self):
+        n = len(self.s)
+        l = r = 0
+        for i in range(1, n - 1):
+            flip = l + r - i  #$
+            o1 = self.check(l, r)
+            if o1:
+                return o1
+            if i < r:
+                self.s[i] = min(r - i, self.s[flip])
+            #start from idx 2
+            while self.lst_str[i + 1 + self.s[i]] == self.lst_str[i - 1 - self.s[i]]:
+                self.s[i] += 1
+            if i + self.s[i] > r:
+                #reverse when over bound
+                l = i - self.s[i]
+                r = i + self.s[i]
+        max_len,center=max((val,idx) for idx,val in enumerate(self.s))
+        start=(center-max_len)//2 #2*c-i to original
+        return self.inp_str[start:start+max_len]
+    #2*c-i
+    #traversing whole string even=s[cen] odd=s[cen+1]
+    def check(self, l, r):
+        n = r - l + 1
+        c = (l + r) // 2
+        if n % 2 == 0:
+            odd = 0
+        else:
+            odd = 1
+        j = 2 * c + 2 + odd
+        return n<= j
+
+
+
