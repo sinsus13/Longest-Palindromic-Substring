@@ -15,43 +15,45 @@ def run_alg(func, input_str):
     results = func(input_str)
     elapsed = (time.perf_counter() - start) * 1000
     return results, elapsed
-    
+ 
 def run_test_cases():
     TEST_CASES = pd.read_csv('test_cases.csv', header=None, names=["id", "test"])
-    
-    case = row['test']
-    if not isinstance(case, str) or case.strip() == '':
+    results=[]   
+    for _, row in test_cases.iterrows():
+        case = row['test']
+        if not isinstance(case, str) or case.strip() == '':
             case = ''
+    
+        brute_result, brute_elapsed = run_test_case(call_cpp_longest_palindrome, item)
+            
+        start = time.perf_counter()
+        dp_result = dp.longestPalindrome(case)
+        end = time.perf_counter()
+        dp_time = (end - start)*1000
+    
+        start1 = time.perf_counter()
+        man_result = manacher.process(case)
+        end1 = time.perf_counter()
+        man_time = (end1 - start1)*1000
+            
+        results.append({
+            'id': row['id'],
+            'Input': case,
+            'Brute_Result': brute_result,
+            'Brute_Time(ms)':
+            'Dp_Results':dp_result,
+            'Dp_Time(ms)': dp_time,
+            'Manacher_Result': man_result,
+            'Manacher_Time(ms)':man_time 
+        })
 
-    brute_result, brute_elapsed = run_test_case(call_cpp_longest_palindrome, item)
-        
-    start = time.perf_counter()
-    dp_result = dp.longestPalindrome(case)
-    end = time.perf_counter()
-    dp_time = (end - start)*1000
-
-    start1 = time.perf_counter()
-    man_result = manacher.process(case)
-    end1 = time.perf_counter()
-    man_time = (end1 - start1)*1000
-        
-    results.append({
-        'id': row['id'],
-        'Input': case,
-        'Brute_Result': brute_result,
-        'Brute_Time(ms)':
-        'Dp_Results':dp_result,
-        'Dp_Time(ms)': dp_time,
-        'Manacher_Result': man_result,
-        'Manacher_Time(ms)':man_time 
-    })
-    return pd.DataFrame(results)
+    return results,pd.DataFrame(results)
 
 def write_file(results_:pd.DataFrame,filename: str='result.csv'):
     results_.to_csv(filename, index=False)
     print('Results written to', filename)
     
-def plt_benchmark(rows,brute_time,manacher_time,dp_time):
+def plt_benchmark(rows):
     barwidth=0.1
     fig= plt.subplots(figsize=(12,8))
     br=[br_t for br_t in rows['Brute_Time(ms)']]
@@ -71,3 +73,6 @@ def plt_benchmark(rows,brute_time,manacher_time,dp_time):
     plt.tight_layout()
     plt.savefig('chart.png', dpi=300, bbox_inches='tight')
     plt.show()
+result,result_df=run_test_cases=run_test_cases()
+write_file(result_df)
+plt_benchmark(result)
