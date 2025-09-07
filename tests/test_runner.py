@@ -1,6 +1,7 @@
 import subprocess
 import csv
 import time
+import numpy as np
 import matplotlib.pyplot as plt
 from src.manacher import Manacher
 from src.dp_solution import Solution
@@ -9,68 +10,64 @@ def call_cpp_longest_palindrome(s):
     result = subprocess.run(['./brute_force'], input=s.encode(), capture_output=True)
     return result.stdout.decode().strip()
 
-def call_manacher(s):
-    return Manacher(s).process()
-
-def run_test_case(func, input_str):
+def run_alg(func, input_str):
     start = time.perf_counter()
     results = func(input_str)
     elapsed = (time.perf_counter() - start) * 1000
     return results, elapsed
+    
+def run_test_cases():
+    TEST_CASES = pd.read_csv('test_cases.csv', header=None, names=["id", "test"])
+    
+    case = row['test']
+    if not isinstance(case, str) or case.strip() == '':
+            case = ''
 
-TEST_CASES = []
-
-with open("test_cases.csv", newline='') as tests:
-    reader = csv.reader(tests)
-    for row in reader:
-        TEST_CASES.append(row[1])
-
-brute_time = []
-dp_time = []
-manacher_time = []
-
-rows = [["Input", "Brute_Result", "Brute_Time(ms)", "Dp_Results", "Dp_Time(ms)" ,"Manacher_Result", "Manacher_Time(ms)"]]
-
-for item in TEST_CASES:
     brute_result, brute_elapsed = run_test_case(call_cpp_longest_palindrome, item)
-    manacher_result, manacher_elapsed = run_test_case(call_manacher, item)
-    #dp_results, dp_elapsed = run_test_case(lil sis func, item)
+        
+    start = time.perf_counter()
+    dp_result = dp.longestPalindrome(case)
+    end = time.perf_counter()
+    dp_time = (end - start)*1000
 
-    brute_time.append(brute_elapsed)
-    #dp_time.append(dp_elapsed)
-    manacher_time.append(manacher_elapsed)
+    start1 = time.perf_counter()
+    man_result = manacher.process(case)
+    end1 = time.perf_counter()
+    man_time = (end1 - start1)*1000
+        
+    results.append({
+        'id': row['id'],
+        'Input': case,
+        'Brute_Result': brute_result,
+        'Brute_Time(ms)':
+        'Dp_Results':dp_result,
+        'Dp_Time(ms)': dp_time,
+        'Manacher_Result': man_result,
+        'Manacher_Time(ms)':man_time 
+    })
+    return pd.DataFrame(results)
 
-    #rows.append([item, brute_result, brute_elapsed, dp_results, dp_elapsed, manacher_result, manacher_elapsed])
-
-print(brute_time)
-print(dp_time)
-print(manacher_time)
-
-with open("output_file.csv", "w", newline='') as f:
-    writer = csv.writer(f)
-    writer.writerows(rows)
-
-fig,ax = plt.subplots(1,3)
-
-ax[0].scatter(TEST_CASES, brute_time)
-ax[0].set_title("Brute Force")
-# ax[1].scatter(TEST_CASES, dp_time)
-# ax[1].set_title("DP")
-ax[2].scatter(TEST_CASES, manacher_time)
-ax[2].set_title("Manacher")
-
-for i in range(3):
-    ax[i].set_xlabel("Cases")
-    ax[i].set_ylabel("Time(ms)")
-    ax[i].tick_params(axis='x', rotation=90)
-
-plt.tight_layout()
-plt.show()
-
-plt.scatter(TEST_CASES, manacher_time, color='blue', label='Manacher')
-# plt.scatter(TEST_CASES, dp_time, color='green', label='DP')
-plt.legend()
-
-plt.xticks(rotation=90)
-plt.tight_layout()
-plt.show()
+def write_file(results_:pd.DataFrame,filename: str='result.csv'):
+    results_.to_csv(filename, index=False)
+    print('Results written to', filename)
+    
+def plt_benchmark(rows,brute_time,manacher_time,dp_time):
+    barwidth=0.1
+    fig= plt.subplots(figsize=(12,8))
+    br=[br_t for br_t in rows['Brute_Time(ms)']]
+    dp=[dp_t fro dp_t in rows['Dp_Time(ms)']]
+    man=[man_t for man_t in rows['Manacher_Time(ms)']]
+    br1 = np.arange(len(br)) 
+    br2 = [x + barWidth for x in br1] 
+    br3 = [x + barWidth for x in br2]
+    plt.bar(br1,br_t,color='r',width=barwidth,edgecolor='grey',label='Brute Force')
+    plt.bar(br2,dp,color='g',width=barwidth,edgecolor='grey',label='Dp')
+    plt.bar(br3,man,color='b',width=barwidth,edgecolor='grey',label='Manacher')
+    plt.xlabel('Algorithm', fontweight ='bold', fontsize = 15) 
+    plt.ylabel('Run time (ms)', fontweight ='bold', fontsize = 15) 
+    plt.xticks([r + barWidth for r in range(len(br))], 
+            [cs for cs in rows['Input'])
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig('chart.png', dpi=300, bbox_inches='tight')
+    plt.show()
