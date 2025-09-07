@@ -24,7 +24,7 @@ def run_test_cases():
         if not isinstance(case, str) or case.strip() == '':
             case = ''
     
-        brute_result, brute_elapsed = run_test_case(call_cpp_longest_palindrome, item)
+        brute_result, brute_elapsed = run_alg(call_cpp_longest_palindrome, item)
             
         start = time.perf_counter()
         dp_result = dp.longestPalindrome(case)
@@ -57,7 +57,7 @@ def plt_benchmark(rows):
     barwidth=0.1
     fig= plt.subplots(figsize=(12,8))
     br=[br_t for br_t in rows['Brute_Time(ms)']]
-    dp=[dp_t fro dp_t in rows['Dp_Time(ms)']]
+    dp=[dp_t for dp_t in rows['Dp_Time(ms)']]
     man=[man_t for man_t in rows['Manacher_Time(ms)']]
     br1 = np.arange(len(br)) 
     br2 = [x + barWidth for x in br1] 
@@ -73,6 +73,7 @@ def plt_benchmark(rows):
     plt.tight_layout()
     plt.savefig('chart.png', dpi=300, bbox_inches='tight')
     plt.show()
+    
 result,result_df=run_test_cases=run_test_cases()
 write_file(result_df)
 plt_benchmark(result)
