@@ -3,6 +3,7 @@ import csv
 import time
 import matplotlib.pyplot as plt
 from src.manacher import Manacher
+from src.dp_solution import Solution
 
 def call_cpp_longest_palindrome(s):
     result = subprocess.run(['./brute_force'], input=s.encode(), capture_output=True)
@@ -10,6 +11,9 @@ def call_cpp_longest_palindrome(s):
 
 def call_manacher(s):
     return Manacher(s).process()
+
+def call_dp(s):
+    return Solution().longestPalindrome(s)
 
 def run_test_case(func, input_str):
     start = time.perf_counter()
@@ -33,13 +37,13 @@ rows = [["Input", "Brute_Result", "Brute_Time(ms)", "Dp_Results", "Dp_Time(ms)" 
 for item in TEST_CASES:
     brute_result, brute_elapsed = run_test_case(call_cpp_longest_palindrome, item)
     manacher_result, manacher_elapsed = run_test_case(call_manacher, item)
-    #dp_results, dp_elapsed = run_test_case(lil_sis_dp_func, item)
+    dp_results, dp_elapsed = run_test_case(call_dp, item)
 
     brute_time.append(brute_elapsed)
-    #dp_time.append(dp_elapsed)
+    dp_time.append(dp_elapsed)
     manacher_time.append(manacher_elapsed)
 
-    #rows.append([item, brute_result, brute_elapsed, dp_results, dp_elapsed, manacher_result, manacher_elapsed])
+    rows.append([item, brute_result, brute_elapsed, dp_results, dp_elapsed, manacher_result, manacher_elapsed])
 
 
 print(brute_time)
@@ -55,7 +59,7 @@ fig,ax = plt.subplots(1,3)
 
 ax[0].scatter(TEST_CASES, brute_time)
 ax[0].set_title("Brute Force")
-#ax[1].scatter(TEST_CASES, dp_time)
+ax[1].scatter(TEST_CASES, dp_time)
 ax[1].set_title("DP")
 ax[2].scatter(TEST_CASES, manacher_time)
 ax[2].set_title("Manacher")
@@ -68,9 +72,9 @@ for i in range(3):
 plt.tight_layout()
 plt.show()
 
-plt.scatter(TEST_CASES, brute_time, color='red', label='Brute Force')
 plt.scatter(TEST_CASES, manacher_time, color='blue', label='Manacher')
-# plt.scatter(TEST_CASES, dp_time, color='green', label='DP')
+plt.scatter(TEST_CASES, dp_time, color='green', label='DP')
+plt.legend()
 
 plt.xticks(rotation=90)
 plt.tight_layout()

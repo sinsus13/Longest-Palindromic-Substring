@@ -10,7 +10,7 @@ bool isPalindrome(const string& s, int start, int end) {
     }
     return true;
 }
-string longestPalindrome(string s)
+extern "C" string longestPalindrome(string s)
 {
     int n = s.length();
     for (int len = n; len >= 1; len--)
