@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from src.manacher import Manacher
 from src.dp_solution import Solution
+from src.brute_force import longest_palindrome
 
 # ------------------- Core Functions -------------------
 
@@ -22,14 +23,18 @@ def run_test_cases():
     TEST_CASES = pd.read_csv('test_cases.csv', header=None, names=["id", "test"])
     results=[]
 
+    manacher = Manacher()
+    dp = Solution()
+
     for _, row in TEST_CASES.iterrows():
         case = row['test']
         if not isinstance(case, str) or case.strip() == '':
             case = ''
 
-        brute_result, brute_elapsed = run_alg(call_cpp_longest_palindrome, case)
-        dp_result, dp_time = run_alg(Solution().longestPalindrome, case)
-        man_result, man_time = run_alg(Manacher().process, case)
+        # brute_result, brute_elapsed = run_alg(call_cpp_longest_palindrome, case)
+        brute_result, brute_elapsed = run_alg(longest_palindrome, case)
+        dp_result, dp_time = run_alg(dp.longestPalindrome, case)
+        man_result, man_time = run_alg(manacher.process, case)
 
         results.append({
             'id': row['id'],
@@ -49,20 +54,22 @@ def write_file(results_:pd.DataFrame,filename: str='result.csv'):
     print(f'Results written to {filename}')
 
 def plt_benchmark(results_df: pd.DataFrame):
-    barwidth = 0.33
+    barwidth = 0.25
     fig, ax = plt.subplots(figsize=(12,8))
 
+    brute = results_df['Brute_Time(ms)']
     dp = results_df['Dp_Time(ms)']
     man = results_df['Manacher_Time(ms)']
 
     x = np.arange(len(results_df))
 
-    ax.bar(x, dp, color='r', width=barwidth, edgecolor='grey', label='DP')
-    ax.bar(x + barwidth, man, color='b', width=barwidth, edgecolor='grey', label='Manacher')
+    ax.bar(x, brute, color='r', width=barwidth, edgecolor='grey', label='Brute Force')
+    ax.bar(x + barwidth, dp, color='g', width=barwidth, edgecolor='grey', label='DP')
+    ax.bar(x + barwidth*2, man, color='b', width=barwidth, edgecolor='grey', label='Manacher')
 
     plt.xlabel('Test Cases', fontweight ='bold', fontsize = 15)
     plt.ylabel('Run time (ms)', fontweight ='bold', fontsize = 15)
-    plt.xticks(x + barwidth/2)
+    plt.xticks(x + barwidth)
     ax.set_xticklabels(results_df['Input'], rotation=90)
     plt.legend()
     plt.tight_layout()
