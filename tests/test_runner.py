@@ -7,7 +7,6 @@ from src.manacher import Manacher
 from src.dp_solution import Solution
 from src.brute_force import Brute_Force
 
-
 # ------------------- Core Functions -------------------
 
 def call_cpp_longest_palindrome(s):
