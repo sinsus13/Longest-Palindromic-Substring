@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from src.manacher import Manacher
 from src.dp_solution import Solution
-from src.brute_force import longest_palindrome
+from src.brute_force import Brute_Force
+
 
 # ------------------- Core Functions -------------------
 
@@ -23,6 +24,7 @@ def run_test_cases():
     TEST_CASES = pd.read_csv('test_cases.csv', header=None, names=["id", "test"])
     results=[]
 
+    brute = Brute_Force()
     manacher = Manacher()
     dp = Solution()
 
@@ -32,7 +34,7 @@ def run_test_cases():
             case = ''
 
         # brute_result, brute_elapsed = run_alg(call_cpp_longest_palindrome, case)
-        brute_result, brute_elapsed = run_alg(longest_palindrome, case)
+        brute_result, brute_elapsed = run_alg(brute.longest_palindrome, case)
         dp_result, dp_time = run_alg(dp.longestPalindrome, case)
         man_result, man_time = run_alg(manacher.process, case)
 
