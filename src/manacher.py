@@ -27,5 +27,3 @@ class Manacher:
         max_len,center=max((val,idx) for idx,val in enumerate(p))
         start=(center-max_len)//2 #2*c-i to original
         return self.inp_str[start:start+max_len]
-
-
