@@ -17,13 +17,11 @@ class Manacher:
             flip = 2*center - i  #$
             if i < r:
                 p[i] = min(r - i, p[flip])
-            #start from idx 2
             while lst_str[i + 1 + p[i]] == lst_str[i - 1 - p[i]]:
                 p[i] += 1
             if i + p[i] > r:
-                #reverse when over bound
-                center = i 
+                center = i
                 r = i + p[i]
         max_len,center=max((val,idx) for idx,val in enumerate(p))
-        start=(center-max_len)//2 #2*c-i to original
+        start=(center-max_len)//2
         return self.inp_str[start:start+max_len]
