@@ -84,7 +84,7 @@ def plt_benchmark(results_):
     ax.set_yscale('log')
     plt.legend()
     plt.tight_layout()
-    plt.savefig('chart.png', dpi=300, bbox_inches='tight')
+    plt.savefig('chart.png', dpi=200, bbox_inches='tight')
     plt.show()
 
 # ------------------- Run Everything -------------------
