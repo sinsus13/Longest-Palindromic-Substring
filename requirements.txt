@@ -1,4 +1,6 @@
-matplotlib for comparison plots
 time for benchmarks
-csv for reading test cases
-subprocesses for opening the brute_force.exe
+numpy for calculations
+matplotlib for comparison plots
+pandas for file reading and writing
+string and random for random string generation
+
