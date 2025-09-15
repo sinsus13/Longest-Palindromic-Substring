@@ -8,8 +8,7 @@ class Brute_Force:
             end -= 1
         return True
 
-
-    def longest_palindrome(self, s : str) -> str:
+    def longest_palindrome(self, s: str) -> str:
         n = len(s)
         for length in range(n, 0, -1):  # decreasing substring length
             for start in range(n - length + 1):
