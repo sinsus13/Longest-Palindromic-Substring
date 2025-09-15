@@ -1,5 +1,5 @@
 # Longest Palindromic Substring
-**Converted from** `Longest Palindromic Substring.docx` by Sina Rajabi & Raya Faezinia. fileciteturn0file0
+**Converted from** `Longest Palindromic Substring.docx` by Sina Rajabi & Raya Faezinia. 
 
 ---
 
@@ -20,7 +20,7 @@
 ## Problem
 A **palindrome** is a string that reads the same forwards and backwards (e.g. `racecar`).  
 **Given** a string `s`, **find the longest palindromic substring** inside `s`.  
-**Example:** for `s = "dsadasjh"`, the longest palindromic substring is `"sadas"`. (Source document: Sina Rajabi & Raya Faezinia). fileciteturn0file0
+**Example:** for `s = "dsadasjh"`, the longest palindromic substring is `"sadas"`. (Source document: Sina Rajabi & Raya Faezinia). 
 
 ---
 
@@ -33,7 +33,7 @@ Input:  "cbbd"
 Output: "bb"
 
 Input:  "abssbm"
-Output: "bssb"  # as explained in the source document example. fileciteturn0file0
+Output: "bssb"  # as explained in the source document example. 
 ```
 
 ---
@@ -190,11 +190,11 @@ Explanation: for each start position `i` (1..n) there are `(n-i+1)` possible sub
 ## Conclusion
 Both dynamic programming and brute-force strategies solve the longest palindromic substring problem. The dynamic approach avoids repeated checks at the cost of `O(n^2)` memory. Brute force uses constant extra memory but runs slower for large `n`. The expand-around-center method offers a pragmatic balance: `O(n^2)` time with `O(1)` space and is often used in practical code.
 
-This README was created by carefully converting the uploaded document `Longest Palindromic Substring.docx`. fileciteturn0file0
+This README was created by carefully converting the uploaded document `Longest Palindromic Substring.docx`. 
 
 ---
 
 ## Sources
-- Problem inspiration / course document: *Longest Palindromic Substring* (Sina Rajabi & Raya Faezinia). fileciteturn0file0  
+- Problem inspiration / course document: *Longest Palindromic Substring* (Sina Rajabi & Raya Faezinia).   
 - LeetCode — Dynamic Programming problem lists.  
 - Wolfram MathWorld — Sum of first n integers.
